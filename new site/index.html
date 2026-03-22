@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spelarstatistik</title>
+
+<!-- CSS -->
+<link rel="stylesheet" href="style.css">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- html2canvas -->
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+
+<body>
+<div class="container">
+
+  <!-- ===== LOADING SCREEN ===== -->
+  <div id="loadingScreen">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- ===== LOGIN ===== -->
+  <div id="loginBox" class="login-card">
+    <h1>Välkommen</h1>
+    <input type="text" id="loginUsername" placeholder="Användarnamn">
+    <input type="password" id="loginPassword" placeholder="Lösenord">
+    <select id="loginRole">
+      <option value="Spelare">Spelare</option>
+      <option value="Coach">Coach</option>
+      <option value="Admin">Admin</option>
+    </select>
+    <button id="loginBtn">Logga in</button>
+    <button id="showCreateBtn">Skapa konto</button>
+  </div>
+
+  <!-- ===== CREATE ACCOUNT POPUP ===== -->
+  <div id="createPopup" class="popup">
+    <div class="popupContent">
+      <h2>Skapa konto</h2>
+      <input type="text" id="firstName" placeholder="Förnamn">
+      <input type="text" id="lastName" placeholder="Efternamn">
+      <input type="text" id="newUsername" placeholder="Användarnamn">
+      <input type="password" id="newPassword" placeholder="Lösenord">
+      <input type="password" id="confirmPassword" placeholder="Bekräfta lösenord">
+      <input type="date" id="birthDate">
+      <select id="newRole">
+        <option value="Spelare">Spelare</option>
+        <option value="Coach">Coach</option>
+      </select>
+      <div class="popupButtons">
+        <button id="createBtn">Skapa</button>
+        <button id="closePopup">Stäng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HOME PAGE ===== -->
+  <div id="homePage" style="display:none;">
+    <h1>Välkommen <span id="userName"></span> (<span id="userRole"></span>)</h1>
+    <button id="logoutBtn">Logga ut</button>
+
+    <!-- Player selection -->
+    <select id="playerSelect" style="display:none;"></select>
+
+    <!-- Type & Date -->
+    <select id="typeSelector"></select>
+    <select id="dateFilter">
+      <option value="all">Alla</option>
+      <option value="24h">Senaste 24h</option>
+      <option value="7d">Senaste 7 dagar</option>
+      <option value="30d">Senaste 30 dagar</option>
+    </select>
+
+    <!-- Stats Grid -->
+    <div id="statsGrid"></div>
+
+    <!-- Charts -->
+    <canvas id="chart"></canvas>
+    <canvas id="lineChart"></canvas>
+
+    <!-- Save Percentage -->
+    <div id="savePercentageCard">
+      <h3>Räddningsprocent</h3>
+      <canvas id="savePercentageChart" width="200" height="200"></canvas>
+      <p id="savePercentageText">0%</p>
+    </div>
+
+    <!-- Precision Map -->
+    <div id="goalContainer">
+      <div id="precisionButtons"></div>
+      <div id="precisionMap"></div>
+      <p>Totala skott: <span id="shotCount">0</span></p>
+    </div>
+
+    <!-- Heatmap -->
+    <div id="heatmapContainer">
+      <div id="heatmap"></div>
+      <button onclick="resetHeatmap()">Rensa Heatmap</button>
+    </div>
+
+    <!-- Rensa statistik (Admin/Coach) -->
+    <button id="resetStatsBtn" style="background:#ff4444; color:white;">Rensa all statistik</button>
+
+    <!-- Comments -->
+    <div id="commentsBox"></div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" style="display:none;">
+      <h2>Admin Panel</h2>
+      <div id="adminTable"></div>
+    </div>
+
+    <!-- Popup kategori -->
+    <div id="popup" class="popup">
+      <div class="popupContent">
+        <h2 id="popupTitle"></h2>
+        <input type="number" id="popupValue" placeholder="Värde">
+        <input type="date" id="popupDate">
+        <textarea id="popupComment" placeholder="Kommentar"></textarea>
+        <div class="popupButtons">
+          <button onclick="savePopup()">Spara</button>
+          <button onclick="closePopup()">Stäng</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="exportPdf">Exportera PDF</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
